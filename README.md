@@ -1,6 +1,6 @@
-# glfw_template
+# imgui_template
 
-Simple template to get started with OpenGL using [GLFW](https://www.glfw.org/docs/latest/quick_guide.html) and [GLEW](https://github.com/nigels-com/glew).
+Simple template to get started with [Dear ImGui](https://github.com/ocornut/imgui) using [GLFW](https://www.glfw.org/docs/latest/quick_guide.html) and [GLEW](https://github.com/nigels-com/glew).
 
 This template uses [cmkr](https://github.com/MoAlyousef/cmkr) together with [vcpkg](https://github.com/microsoft/vcpkg) for frictionless cross platform dependency management with CMake.
 
@@ -27,16 +27,13 @@ version = "3.15"
 cmkr-include = "cmake/cmkr.cmake"
 
 [project]
-name = "glfw_template"
-include-after = [
-    "cmake/generate_shaders.cmake"
-]
+name = "imgui_template"
 
 # See https://github.com/microsoft/vcpkg#getting-started on how to use vcpkg
 # Chose a version from https://github.com/microsoft/vcpkg/releases
 # During CMake configuration you will be told how to find and link to the packages
 [vcpkg]
-version = "2020.11"
+version = "2021.05.12"
 packages = ["glfw3", "GLEW"]
 
 # vcpkg will download the packages, but you still need to find them to use them
@@ -44,19 +41,23 @@ packages = ["glfw3", "GLEW"]
 glfw3 = {}
 GLEW = {}
 
-[target.example]
-type = "executable"
+[target.imgui]
+type = "static"
 sources = [
-    "src/example.cpp",
-    "shaders/FragmentShader.glsl",
-    "shaders/VertexShader.glsl",
+    "third_party/imgui/*.cpp",
+    "third_party/imgui/*.h",
+    "third_party/imgui/backends/imgui_impl_glfw.cpp",
+    "third_party/imgui/backends/imgui_impl_glfw.h",
+    "third_party/imgui/backends/imgui_impl_opengl3.cpp",
+    "third_party/imgui/backends/imgui_impl_opengl3.h",
 ]
-include-directories = [
-    "${CMAKE_CURRENT_BINARY_DIR}/include"
-]
+include-directories = ["third_party/imgui"]
 link-libraries = ["glfw", "GLEW::GLEW"]
 compile-features = ["cxx_std_11"]
-cmake-after = """
-generate_shaders(example)
-"""
+
+[target.example]
+type = "executable"
+sources = ["src/main.cpp"]
+link-libraries = ["imgui"]
+
 ```

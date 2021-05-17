@@ -1,0 +1,1 @@
+Vendored by hand from: https://github.com/ocornut/imgui/releases/tag/v1.82
