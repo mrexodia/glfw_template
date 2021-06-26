@@ -10,7 +10,7 @@ name = "imgui_template"
 # During CMake configuration you will be told how to find and link to the packages
 [vcpkg]
 version = "2021.05.12"
-packages = ["glfw3", "GLEW"]
+packages = ["glfw3", "glew"]
 
 # vcpkg will download the packages, but you still need to find them to use them
 [find-package]

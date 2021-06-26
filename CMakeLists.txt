@@ -25,28 +25,13 @@ endif()
 
 project(imgui_template)
 
-include(FetchContent)
-
-message(STATUS "Fetching pmm...")
-FetchContent_Declare(
-	pmm
-	SOURCE_SUBDIR
-		pmm
-	URL
-		https://github.com/vector-of-bool/pmm/archive/refs/tags/1.5.1.tar.gz
-)
-FetchContent_MakeAvailable(pmm)
-
-# Bootstrap vcpkg
-include("${pmm_SOURCE_DIR}/pmm.cmake")
-pmm(
-	VCPKG
-		REVISION
-			2021.05.12
-		REQUIRES
-			glfw3
-			GLEW
-)
+if(CMKR_ROOT_PROJECT AND NOT CMKR_DISABLE_VCPKG)
+	include(FetchContent)
+	message(STATUS "Fetching vcpkg...")
+	FetchContent_Declare(vcpkg URL "https://github.com/microsoft/vcpkg/archive/refs/tags/2021.05.12.tar.gz")
+	FetchContent_MakeAvailable(vcpkg)
+	include("${vcpkg_SOURCE_DIR}/scripts/buildsystems/vcpkg.cmake")
+endif()
 
 # Packages
 find_package(glfw3 REQUIRED CONFIG)
@@ -103,6 +88,7 @@ target_link_libraries(imgui PUBLIC
 
 unset(CMKR_TARGET)
 unset(CMKR_SOURCES)
+
 # Target example
 set(CMKR_TARGET example)
 set(example_SOURCES "")
@@ -135,3 +121,4 @@ target_link_libraries(example PRIVATE
 
 unset(CMKR_TARGET)
 unset(CMKR_SOURCES)
+
